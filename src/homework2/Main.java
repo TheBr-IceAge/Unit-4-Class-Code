@@ -5,85 +5,65 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        //vowel counter
-        vowelCounter("The quick brown fox jumped over the lazy dog.");
-        System.out.println();
-        vowelCounter("aaeeeeiiiioouuuu");
-        System.out.println();
-        
-        //palindrome checker
-        palindromeChecker("level");
-        System.out.println();
-        palindromeChecker("abcde");
-        System.out.println();
-        palindromeChecker("racecar");
-        System.out.println();
-        palindromeChecker("aBbA");
-        System.out.println();
-        
-        //extra credit
-        palindromeChecker("s*dfj*js");
-        System.out.println();
-        palindromeChecker("jf&fj");
-    }
+        String wrd = "BRYCE";
+        int try = 0;
+        Scanner bryscan = new bryscan(System.in);
 
-    //Problem 1: Vowel Counter
-    public static void vowelCounter(String str) {
-        //go to lower case
-        str = str.toLowerCase();
+        while (true) {
+            //sout doesn't work as a shortcut :(
+            System.out.print("Enter your 5-letter guess: ");
+            String guess = scanner.nextLine().toUpperCase();
 
-        //initialize variables
-        int aC = 0;
-        int eC = 0;
-        int iC = 0;
-        int oC = 0;
-        int uC = 0;
+            // Ensure the guess is exactly 5 letters
+            if (guess.length() != 5) {
+                System.out.println("Please enter exactly 5 letters.");
+                continue;
+            }
 
-        //for loop
-        for (int i = 0; i < str.length(); i++) {
-            char v = str.charAt(i);
-            
-            //switch case
-            switch (v) {
-                case 'a': aC++; break;
-                case 'e': eC++; break;
-                case 'i': iC++; break;
-                case 'o': oC++; break;
-                case 'u': uC++; break;
-                default: break;
+            // Check the guess and provide feedback
+            int correctPosition = 0;
+            int incorrectPosition = 0;
+            boolean[] targetUsed = new boolean[5]; // Track used letters from target word
+            boolean[] guessUsed = new boolean[5];  // Track used letters from guess
+
+            // First pass: Check for correct positions
+            for (int i = 0; i < 5; i++) {
+                if (guess.charAt(i) == targetWord.charAt(i)) {
+                    correctPosition++;
+                    targetUsed[i] = true;
+                    guessUsed[i] = true;
+                }
+            }
+
+            // Second pass: Check for incorrect positions
+            for (int i = 0; i < 5; i++) {
+                if (guessUsed[i]) continue; // Skip if this letter is already in the correct position
+
+                for (int j = 0; j < 5; j++) {
+                    if (!targetUsed[j] && guess.charAt(i) == targetWord.charAt(j) && !guessUsed[i]) {
+                        incorrectPosition++;
+                        targetUsed[j] = true; // Mark target letter as used
+                        guessUsed[i] = true;  // Mark guess letter as used
+                        break; // Stop looking for this letter in the target word
+                    }
+                }
+            }
+
+            // Increment the attempt count
+            attemptCount++;
+
+            // Display feedback
+            System.out.println(correctPosition + " letters in the correct position.");
+            System.out.println(incorrectPosition + " letters are correct but in the wrong position.");
+
+            // If the guess is correct
+            if (correctPosition == 5) {
+                System.out.println("Congratulations! You guessed the word in " + attemptCount + " attempts.");
+                break; // Exit the loop if the user guesses correctly
             }
         }
 
-        //printin the numbas
-        System.out.println("Number of a's: " + aC);
-        System.out.println("Number of e's: " + eC);
-        System.out.println("Number of i's: " + iC);
-        System.out.println("Number of o's: " + oC);
-        System.out.println("Number of u's: " + uC);
-    }
-
-    //Problem 2: Palindrome Checker
-    public static void palindromeChecker(String str) {
-        //googled how to quickly check if a character isn't a letter
-        for (int i = 0; i < str.length(); i++) {
-            char l = str.charAt(i);
-            if (!Character.isLetterOrDigit(l)) {
-                System.out.println("Error: Invalid character detected in " + str);
-                return;
-            }
-        }
-
-        //no spaces and lower case(googled how to do no space part)
-        //Note: ^ means set isn't valid
-        str = str.replaceAll("[^a-z A-Z 0-9]", "").toLowerCase();
-
-        //is it palindrome?(also googled how to do this)
-        String pali = new StringBuilder(str).reverse().toString();
-        
-        if (str.equals(pali)) {
-            System.out.println(str + " is a palindrome.");
-        } else {
-            System.out.println(str + " is not a palindrome.");
-        }
+      
+        scanner.close();
     }
 }
